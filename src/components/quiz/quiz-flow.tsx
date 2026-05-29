@@ -1,8 +1,8 @@
 'use client';
 
-import { useCallback } from 'react';
+import { useCallback, useEffect, useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ArrowLeft, Check, Sparkles, Shield, Clock } from 'lucide-react';
+import { X, ArrowLeft, Check, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { useAppStore } from '@/store/use-app-store';
@@ -54,132 +54,112 @@ const staggerItem = {
   animate: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 300, damping: 24 } },
 };
 
-// ─── Welcome Screen ────────────────────────────────────────────
+// ─── Social Proof Messages ─────────────────────────────────────
 
-function WelcomeScreen({ onStart }: { onStart: () => void }) {
-  const benefits = [
-    {
-      icon: <Sparkles className="size-5 text-brand-pink" />,
-      title: 'Personalizado',
-      description: 'Recomendaciones adaptadas a tu situación',
-    },
-    {
-      icon: <Shield className="size-5 text-brand-teal" />,
-      title: 'Sin compromiso',
-      description: 'Sin registro ni datos personales',
-    },
-    {
-      icon: <Clock className="size-5 text-brand-pink" />,
-      title: 'Resultados inmediatos',
-      description: 'En solo 60 segundos',
-    },
-  ];
+const socialProofMessages = [
+  'María de Bogotá acaba de encontrar su solución 🎉',
+  'Carolina de Medellín ya está libre de piojos ✨',
+  'Andrea de Barranquilla completó su diagnóstico ✔️',
+  'Lucía de Cali encontró el producto ideal 💚',
+  'Diana de Bucaramanga resolvió su problema hoy 🙌',
+  'Sandra de Ibagué recomendó Libre de Piojos ⭐',
+  'Valentina de Bogotá está viendo sus resultados 🎊',
+  'Camila de Medellín protege a su familia ahora 🛡️',
+  'Natalia de Barranquilla acaba de comprar su kit 🛒',
+  'Patricia de Cali encontró la solución perfecta 💫',
+];
+
+// ─── Live Counter Hook ─────────────────────────────────────────
+
+function useLiveCounter() {
+  // Lazy init with a random base between 47-73
+  const [count, setCount] = useState(() => Math.floor(Math.random() * 27) + 47);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCount((prev) => {
+        // Fluctuate between -2 and +2, clamped to 30-99
+        const delta = Math.floor(Math.random() * 5) - 2;
+        const next = prev + delta;
+        return Math.max(30, Math.min(99, next));
+      });
+    }, 4000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  return count;
+}
+
+// ─── Social Proof Ticker Hook ──────────────────────────────────
+
+function useSocialProofTicker() {
+  // Lazy init with a random starting message
+  const [index, setIndex] = useState(() => Math.floor(Math.random() * socialProofMessages.length));
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIndex((prev) => (prev + 1) % socialProofMessages.length);
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  return socialProofMessages[index];
+}
+
+// ─── Live Counter Component ────────────────────────────────────
+
+function LiveCounter() {
+  const count = useLiveCounter();
 
   return (
     <motion.div
-      className="flex flex-col items-center justify-center min-h-[70vh] px-4 text-center"
-      initial={{ opacity: 0, y: 30 }}
+      className="flex items-center justify-center gap-2 mb-3"
+      initial={{ opacity: 0, y: -10 }}
       animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -20 }}
-      transition={{ duration: 0.5, ease: 'easeOut' }}
+      transition={{ delay: 0.3, duration: 0.4 }}
     >
-      {/* Decorative top circle */}
-      <motion.div
-        className="absolute -top-20 -right-20 size-64 rounded-full bg-brand-pink/5 blur-3xl pointer-events-none"
-        initial={{ scale: 0 }}
-        animate={{ scale: 1 }}
-        transition={{ duration: 1, ease: 'easeOut' }}
-      />
-
-      <motion.div
-        className="absolute -bottom-20 -left-20 size-48 rounded-full bg-brand-teal/5 blur-3xl pointer-events-none"
-        initial={{ scale: 0 }}
-        animate={{ scale: 1 }}
-        transition={{ duration: 1, ease: 'easeOut', delay: 0.2 }}
-      />
-
-      {/* Badge */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ delay: 0.1, type: 'spring', stiffness: 200 }}
-        className="inline-flex items-center gap-2 rounded-full bg-brand-pink/10 px-4 py-1.5 text-sm font-medium text-brand-pink mb-6"
-      >
-        <Sparkles className="size-4" />
-        Diagnóstico Gratuito
-      </motion.div>
-
-      {/* Title */}
-      <motion.h1
-        className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-4"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.2 }}
-      >
-        <span className="brand-gradient-text">Diagnóstico Gratuito</span>
-      </motion.h1>
-
-      {/* Subtitle */}
-      <motion.p
-        className="text-muted-foreground text-base sm:text-lg max-w-md mb-10"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.3 }}
-      >
-        Descubre la solución ideal para tu caso en solo{' '}
-        <span className="font-semibold text-foreground">60 segundos</span>
-      </motion.p>
-
-      {/* Benefits */}
-      <motion.div
-        className="flex flex-col sm:flex-row gap-4 sm:gap-6 mb-10 w-full max-w-lg"
-        initial="initial"
-        animate="animate"
-        variants={staggerContainer}
-      >
-        {benefits.map((benefit) => (
-          <motion.div
-            key={benefit.title}
-            variants={staggerItem}
-            className="flex sm:flex-col items-center sm:items-center gap-3 sm:gap-2 text-center"
-          >
-            <div className="flex size-10 items-center justify-center rounded-full bg-brand-cream shrink-0">
-              {benefit.icon}
-            </div>
-            <div>
-              <p className="font-semibold text-sm">{benefit.title}</p>
-              <p className="text-xs text-muted-foreground">{benefit.description}</p>
-            </div>
-          </motion.div>
-        ))}
-      </motion.div>
-
-      {/* CTA Button */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.5 }}
-        className="relative"
-      >
-        <Button
-          onClick={onStart}
-          size="lg"
-          className="relative bg-brand-pink hover:bg-brand-pink-dark text-white font-semibold px-8 py-6 text-base rounded-xl shadow-lg shadow-brand-pink/25 transition-all duration-300 pulse-ring"
-        >
-          Comenzar Diagnóstico
-        </Button>
-      </motion.div>
-
-      {/* Trust indicator */}
-      <motion.p
-        className="mt-4 text-xs text-muted-foreground"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.7 }}
-      >
-        +15,000 familias ya encontraron su solución
-      </motion.p>
+      <div className="flex items-center gap-1.5 bg-brand-pink/8 border border-brand-pink/15 rounded-full px-3 py-1">
+        <span className="relative flex size-2">
+          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-pink opacity-75" />
+          <span className="relative inline-flex rounded-full size-2 bg-brand-pink" />
+        </span>
+        <Users className="size-3.5 text-brand-pink" />
+        <span className="text-xs font-medium text-brand-pink-dark">
+          <span className="tabular-nums font-bold">{count}</span> personas están haciendo el diagnóstico ahora
+        </span>
+      </div>
     </motion.div>
+  );
+}
+
+// ─── Social Proof Ticker Component ─────────────────────────────
+
+function SocialProofTicker() {
+  const message = useSocialProofTicker();
+
+  return (
+    <div className="w-full overflow-hidden mt-6">
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={message}
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -12 }}
+          transition={{ duration: 0.4, ease: 'easeInOut' }}
+          className="flex items-center justify-center gap-2 text-center"
+        >
+          <span className="relative flex size-2 shrink-0">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-60" />
+            <span className="relative inline-flex rounded-full size-2 bg-green-500" />
+          </span>
+          <p className="text-xs sm:text-sm text-muted-foreground font-medium">
+            {message}
+          </p>
+        </motion.div>
+      </AnimatePresence>
+    </div>
   );
 }
 
@@ -313,6 +293,10 @@ function QuizStep({
   );
 }
 
+// ─── Step Labels ───────────────────────────────────────────────
+
+const stepLabels = ['Síntoma', 'Persona', 'Urgencia', 'Historial', 'Cabello'];
+
 // ─── Main Quiz Flow ────────────────────────────────────────────
 
 export function QuizFlow() {
@@ -332,12 +316,18 @@ export function QuizFlow() {
   const totalSteps = quizQuestions.length;
   const direction = useAppStore((s) => s.quizStep) >= 0 ? 1 : -1;
   const currentQuestion = quizQuestions[quizStep];
-  const progressPercent = quizStarted ? ((quizStep + 1) / totalSteps) * 100 : 0;
+  const progressPercent = ((quizStep + 1) / totalSteps) * 100;
 
-  const handleStart = useCallback(() => {
-    setQuizStarted(true);
-    setQuizStep(0);
-  }, [setQuizStarted, setQuizStep]);
+  // ─── Auto-start quiz immediately ───────────────────
+  const hasAutoStarted = useRef(false);
+
+  useEffect(() => {
+    if (!quizStarted && !hasAutoStarted.current) {
+      hasAutoStarted.current = true;
+      setQuizStarted(true);
+      setQuizStep(0);
+    }
+  }, [quizStarted, setQuizStarted, setQuizStep]);
 
   const handleSelectOption = useCallback(
     (option: QuizOption) => {
@@ -382,31 +372,14 @@ export function QuizFlow() {
     setView('home');
   }, [resetQuiz, setView]);
 
-  // ─── Welcome Screen ──────────────────────────────
-  if (!quizStarted) {
-    return (
-      <div className="relative w-full max-w-2xl mx-auto">
-        {/* Exit button (for consistency, though not critical on welcome) */}
-        <div className="flex justify-end mb-4">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={handleExit}
-            className="rounded-full text-muted-foreground hover:text-foreground"
-          >
-            <X className="size-5" />
-          </Button>
-        </div>
-        <WelcomeScreen onStart={handleStart} />
-      </div>
-    );
-  }
-
-  // ─── Quiz Steps ──────────────────────────────────
+  // ─── Quiz Steps (no welcome screen) ────────────────
   return (
     <div className="relative w-full max-w-2xl mx-auto px-4 py-6">
+      {/* Live counter near top */}
+      <LiveCounter />
+
       {/* Top bar: Exit + Progress + Step indicator */}
-      <div className="flex items-center gap-3 mb-6">
+      <div className="flex items-center gap-3 mb-4">
         {/* Back / Exit button */}
         {quizStep > 0 ? (
           <Button
@@ -428,9 +401,9 @@ export function QuizFlow() {
           </Button>
         )}
 
-        {/* Progress bar */}
+        {/* Progress bar - more prominent with 3px height */}
         <div className="flex-1 relative">
-          <div className="h-2.5 w-full rounded-full bg-muted overflow-hidden">
+          <div className="h-[3px] w-full rounded-full bg-muted overflow-hidden">
             <motion.div
               className="h-full rounded-full quiz-progress-gradient"
               initial={{ width: 0 }}
@@ -446,20 +419,32 @@ export function QuizFlow() {
         </span>
       </div>
 
-      {/* Step dots indicator */}
-      <div className="flex items-center justify-center gap-2 mb-8">
+      {/* Step dots indicator with labels below */}
+      <div className="flex items-center justify-center gap-3 mb-8">
         {quizQuestions.map((q, i) => (
-          <motion.div
-            key={q.id}
-            className={`h-1.5 rounded-full transition-all duration-300 ${
-              i === quizStep
-                ? 'w-6 bg-brand-pink'
-                : i < quizStep
-                ? 'w-4 bg-brand-teal'
-                : 'w-4 bg-muted-foreground/20'
-            }`}
-            layout
-          />
+          <div key={q.id} className="flex flex-col items-center gap-1.5">
+            <motion.div
+              className={`rounded-full transition-all duration-300 ${
+                i === quizStep
+                  ? 'w-7 h-2 bg-brand-pink'
+                  : i < quizStep
+                  ? 'w-5 h-2 bg-brand-teal'
+                  : 'w-5 h-2 bg-muted-foreground/20'
+              }`}
+              layout
+            />
+            <span
+              className={`text-[10px] sm:text-xs font-medium transition-colors duration-300 ${
+                i === quizStep
+                  ? 'text-brand-pink'
+                  : i < quizStep
+                  ? 'text-brand-teal'
+                  : 'text-muted-foreground/40'
+              }`}
+            >
+              {stepLabels[i] || `Paso ${i + 1}`}
+            </span>
+          </div>
         ))}
       </div>
 
@@ -481,7 +466,7 @@ export function QuizFlow() {
 
       {/* Bottom navigation hint */}
       <motion.div
-        className="mt-8 text-center"
+        className="mt-6 text-center"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.4 }}
@@ -492,6 +477,9 @@ export function QuizFlow() {
             : 'Selecciona una opción para continuar'}
         </p>
       </motion.div>
+
+      {/* Social proof ticker */}
+      <SocialProofTicker />
     </div>
   );
 }

@@ -31,7 +31,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useAppStore } from "@/store/use-app-store";
-import { formatPrice, locations } from "@/lib/data";
+import { formatPrice, locations, quizQuestions } from "@/lib/data";
 import {
   ShoppingCart,
   Minus,
@@ -49,6 +49,9 @@ import {
   Home,
   CheckCircle2,
   ArrowLeft,
+  ClipboardCheck,
+  Star,
+  ChevronRight,
 } from "lucide-react";
 
 // ---------------------------------------------------------------------------
@@ -166,6 +169,8 @@ export function CheckoutPage() {
     setView,
     setShowSuccessModal,
     showSuccessModal,
+    quizAnswers,
+    recommendedProducts,
   } = useAppStore();
 
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>(
@@ -186,6 +191,29 @@ export function CheckoutPage() {
   const qualifiesForFreeShipping = subtotal >= FREE_SHIPPING_THRESHOLD;
   const shipping = qualifiesForFreeShipping ? 0 : SHIPPING_COST;
   const total = subtotal + shipping;
+
+  // Resolve quiz answers into human-readable labels
+  const diagnosisSummary = useMemo(() => {
+    const entries: { question: string; answer: string; icon: string }[] = [];
+    for (const q of quizQuestions) {
+      const answerId = quizAnswers[q.id];
+      if (!answerId) continue;
+      const option = q.options.find((o) => o.id === answerId || o.value === answerId);
+      if (option) {
+        entries.push({
+          question: q.question,
+          answer: option.label,
+          icon: option.icon,
+        });
+      }
+    }
+    return entries;
+  }, [quizAnswers]);
+
+  const hasDiagnosis = diagnosisSummary.length > 0;
+
+  // Primary recommended product
+  const primaryRecommendation = recommendedProducts?.[0] ?? null;
 
   // Generate order number on confirm
   const generateOrderNumber = () => {
@@ -323,6 +351,37 @@ export function CheckoutPage() {
           </Button>
         </motion.div>
 
+        {/* Progress Indicator */}
+        <motion.div
+          initial={{ opacity: 0, y: -8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+          className="mb-6"
+        >
+          <div className="flex items-center justify-center gap-0 sm:gap-2 py-3 px-4 rounded-xl bg-white/80 backdrop-blur-sm border border-gray-100 shadow-sm">
+            <span className="flex items-center gap-1.5 text-sm font-semibold text-[#2B8780]">
+              <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-[#2B8780] text-white text-xs">
+                ✓
+              </span>
+              Diagnóstico
+            </span>
+            <ChevronRight className="w-4 h-4 text-gray-300 mx-1" />
+            <span className="flex items-center gap-1.5 text-sm font-semibold text-[#2B8780]">
+              <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-[#2B8780] text-white text-xs">
+                ✓
+              </span>
+              Resultados
+            </span>
+            <ChevronRight className="w-4 h-4 text-gray-300 mx-1" />
+            <span className="flex items-center gap-1.5 text-sm font-bold text-[#D941A8]">
+              <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-[#D941A8] text-white text-xs">
+                📍
+              </span>
+              Confirmación
+            </span>
+          </div>
+        </motion.div>
+
         {/* Page title */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -331,12 +390,60 @@ export function CheckoutPage() {
           className="mb-8"
         >
           <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
-            Finalizar Compra
+            Completa Tu Solución
           </h1>
           <p className="text-gray-500 mt-1">
-            Completa tus datos y confirma tu pedido
+            Confirma tus datos y recibe tu solución personalizada
           </p>
         </motion.div>
+
+        {/* ----------------------------------------------------------- */}
+        {/* Tu Diagnóstico Summary Card                                  */}
+        {/* ----------------------------------------------------------- */}
+        {hasDiagnosis && (
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+            className="mb-6"
+          >
+            <Card className="border-0 shadow-md bg-gradient-to-br from-white to-[#F8E0F0]/20 overflow-hidden">
+              <CardHeader className="pb-2">
+                <CardTitle className="flex items-center gap-2 text-base">
+                  <div className="w-8 h-8 rounded-lg bg-[#2B8780]/10 flex items-center justify-center">
+                    <ClipboardCheck className="w-4 h-4 text-[#2B8780]" />
+                  </div>
+                  Tu Diagnóstico
+                </CardTitle>
+                <CardDescription className="text-xs">
+                  Basado en tus respuestas del diagnóstico
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                  {diagnosisSummary.map((entry, idx) => (
+                    <div
+                      key={idx}
+                      className="flex items-start gap-2.5 p-3 rounded-lg bg-white/70 border border-gray-100"
+                    >
+                      <span className="text-lg leading-none mt-0.5 shrink-0">
+                        {entry.icon}
+                      </span>
+                      <div className="min-w-0">
+                        <p className="text-[11px] text-gray-400 leading-tight mb-0.5">
+                          {entry.question}
+                        </p>
+                        <p className="text-sm font-semibold text-gray-800 leading-snug truncate">
+                          {entry.answer}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+        )}
 
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 lg:gap-8">
           {/* ============================================================= */}
@@ -361,7 +468,7 @@ export function CheckoutPage() {
                     Datos de Envío
                   </CardTitle>
                   <CardDescription>
-                    Información para el envío de tu pedido
+                    Información para el envío de tu solución
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
@@ -619,7 +726,7 @@ export function CheckoutPage() {
                 ) : (
                   <span className="flex items-center gap-2">
                     <Lock className="w-4 h-4" />
-                    Confirmar Pedido · {formatPrice(total)}
+                    Confirmar Solución · {formatPrice(total)}
                   </span>
                 )}
               </Button>
@@ -631,6 +738,45 @@ export function CheckoutPage() {
           {/* ============================================================= */}
           <div className="lg:col-span-2">
             <div className="lg:sticky lg:top-24 space-y-6">
+              {/* ----------------------------------------------------------- */}
+              {/* Tu Kit Recomendado Badge                                     */}
+              {/* ----------------------------------------------------------- */}
+              {primaryRecommendation && (
+                <motion.div
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  <Card className="border-0 shadow-md bg-gradient-to-br from-[#D941A8]/5 to-[#2B8780]/5 overflow-hidden">
+                    <CardContent className="p-4">
+                      <div className="flex items-center gap-3">
+                        <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-[#F8E0F0] to-[#E0F2F0] flex items-center justify-center text-xl shrink-0">
+                          {primaryRecommendation.category === "treatment"
+                            ? "🧴"
+                            : primaryRecommendation.category === "prevention"
+                            ? "🛡️"
+                            : "✨"}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 mb-0.5">
+                            <Badge className="bg-[#D941A8] text-white border-0 text-[10px] px-2 py-0 h-5 font-bold tracking-wide uppercase">
+                              <Star className="w-3 h-3 mr-0.5" />
+                              Recomendación #1
+                            </Badge>
+                          </div>
+                          <p className="text-sm font-bold text-gray-900 truncate">
+                            {primaryRecommendation.name}
+                          </p>
+                          <p className="text-xs text-gray-500 truncate">
+                            {primaryRecommendation.shortDescription}
+                          </p>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              )}
+
               {/* ----------------------------------------------------------- */}
               {/* Order Summary Card                                           */}
               {/* ----------------------------------------------------------- */}
@@ -645,7 +791,7 @@ export function CheckoutPage() {
                     <CardTitle className="flex items-center justify-between text-lg">
                       <span className="flex items-center gap-2">
                         <ShoppingCart className="w-5 h-5 text-[#D941A8]" />
-                        Resumen del Pedido
+                        Tu Solución Personalizada
                       </span>
                       <Badge
                         variant="secondary"
@@ -863,7 +1009,7 @@ export function CheckoutPage() {
                   ) : (
                     <span className="flex items-center gap-2">
                       <Lock className="w-4 h-4" />
-                      Confirmar Pedido · {formatPrice(total)}
+                      Confirmar Solución · {formatPrice(total)}
                     </span>
                   )}
                 </Button>
@@ -910,9 +1056,9 @@ export function CheckoutPage() {
                   >
                     <CheckCircle2 className="w-16 h-16 mx-auto mb-3 drop-shadow-lg" />
                   </motion.div>
-                  <h2 className="text-2xl font-bold">¡Pedido Confirmado!</h2>
+                  <h2 className="text-2xl font-bold">¡Tu Solución Está en Camino!</h2>
                   <p className="text-white/80 text-sm mt-1">
-                    Tu pedido ha sido procesado exitosamente
+                    Tu solución personalizada ha sido procesada exitosamente
                   </p>
                 </div>
 
@@ -989,9 +1135,13 @@ export function CheckoutPage() {
                   {/* WhatsApp CTA */}
                   <a
                     href={`https://wa.me/573001234567?text=${encodeURIComponent(
-                      `¡Hola! Acabo de hacer mi pedido ${orderNumber} por ${formatPrice(
+                      `¡Hola! Acabo de confirmar mi solución personalizada (pedido ${orderNumber}) por ${formatPrice(
                         total
-                      )}. Quiero hacer seguimiento.`
+                      )}. Mi diagnóstico: ${
+                        hasDiagnosis
+                          ? diagnosisSummary.map((d) => d.answer).join(", ")
+                          : "N/A"
+                      }. Quiero hacer seguimiento.`
                     )}`}
                     target="_blank"
                     rel="noopener noreferrer"
