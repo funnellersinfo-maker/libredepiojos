@@ -387,6 +387,7 @@ export function QuizFlow() {
             size="icon"
             onClick={handleBack}
             className="rounded-full shrink-0 hover:bg-brand-cream text-muted-foreground hover:text-foreground"
+            aria-label="Volver"
           >
             <ArrowLeft className="size-5" />
           </Button>
@@ -396,6 +397,7 @@ export function QuizFlow() {
             size="icon"
             onClick={handleExit}
             className="rounded-full shrink-0 text-muted-foreground hover:text-foreground"
+            aria-label="Salir del cuestionario"
           >
             <X className="size-5" />
           </Button>

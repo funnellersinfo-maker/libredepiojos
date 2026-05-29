@@ -81,7 +81,7 @@ export function Header() {
           <div className="flex items-center gap-2">
             {/* Phone CTA */}
             <a
-              href="https://wa.me/573001234567"
+              href="https://wa.me/573001234567?text=Hola%2C%20me%20gustar%C3%ADa%20agendar%20una%20cita"
               target="_blank"
               rel="noopener noreferrer"
               className="hidden sm:flex items-center gap-1.5 text-sm text-[#2B8780] hover:text-[#1D6B66] font-medium transition-colors"
@@ -97,6 +97,7 @@ export function Header() {
                   variant="outline"
                   size="icon"
                   className="relative border-[#D941A8]/20 hover:border-[#D941A8] hover:bg-[#F8E0F0]/50"
+                  aria-label="Abrir carrito"
                 >
                   <ShoppingCart className="w-4 h-4" />
                   {cartCount() > 0 && (
@@ -162,6 +163,7 @@ export function Header() {
                                     )
                                   }
                                   className="w-6 h-6 rounded-full border border-border flex items-center justify-center text-xs hover:bg-muted"
+                                  aria-label="Reducir cantidad"
                                 >
                                   -
                                 </button>
@@ -176,6 +178,7 @@ export function Header() {
                                     )
                                   }
                                   className="w-6 h-6 rounded-full border border-border flex items-center justify-center text-xs hover:bg-muted"
+                                  aria-label="Aumentar cantidad"
                                 >
                                   +
                                 </button>
@@ -184,6 +187,7 @@ export function Header() {
                                     removeFromCart(item.product.id)
                                   }
                                   className="ml-auto text-muted-foreground hover:text-destructive"
+                                  aria-label="Eliminar del carrito"
                                 >
                                   <X className="w-3.5 h-3.5" />
                                 </button>
@@ -224,6 +228,7 @@ export function Header() {
               size="icon"
               className="md:hidden"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-label="Abrir menú"
             >
               <Menu className="w-5 h-5" />
             </Button>
@@ -254,7 +259,7 @@ export function Header() {
                 </Button>
               ))}
               <a
-                href="https://wa.me/573001234567"
+                href="https://wa.me/573001234567?text=Hola%2C%20me%20gustar%C3%ADa%20agendar%20una%20cita"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 px-4 py-2 text-sm text-[#2B8780] font-medium"

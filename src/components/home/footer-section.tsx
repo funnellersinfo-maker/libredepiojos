@@ -129,7 +129,7 @@ export function FooterSection() {
               <li className="flex gap-2">
                 <Phone className="w-4 h-4 text-[#2B8780] shrink-0" />
                 <a
-                  href="https://wa.me/573001234567"
+                  href="https://wa.me/573001234567?text=Hola%2C%20necesito%20informaci%C3%B3n%20sobre%20sus%20productos"
                   className="text-sm text-white/70 hover:text-[#D941A8] transition-colors"
                 >
                   WhatsApp

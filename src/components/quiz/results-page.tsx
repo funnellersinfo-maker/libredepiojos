@@ -78,6 +78,7 @@ interface ConfettiParticle {
 }
 
 function ConfettiCelebration() {
+  const [windowHeight, setWindowHeight] = useState(800);
   const [particles] = useState<ConfettiParticle[]>(() => {
     const colors = [PINK, TEAL, CREAM, '#F8E0F0', '#E0F2F0', '#FFD700'];
     const shapes: ConfettiParticle['shape'][] = ['circle', 'square', 'triangle'];
@@ -91,6 +92,10 @@ function ConfettiCelebration() {
       shape: shapes[Math.floor(Math.random() * shapes.length)],
     }));
   });
+
+  useEffect(() => {
+    setWindowHeight(window.innerHeight);
+  }, []);
 
   return (
     <div className="pointer-events-none fixed inset-0 z-50 overflow-hidden">
@@ -118,7 +123,7 @@ function ConfettiCelebration() {
           }}
           initial={{ y: -20, opacity: 1, rotate: 0 }}
           animate={{
-            y: window.innerHeight + 40,
+            y: windowHeight + 40,
             opacity: [1, 1, 0.5, 0],
             rotate: [0, 180, 360, 540],
             x: [0, (Math.random() - 0.5) * 100, (Math.random() - 0.5) * 60],
@@ -289,6 +294,7 @@ function SecondaryProductCard({
             onClick={() => onViewProduct(product)}
             size="sm"
             className="border-brand-teal/30 text-brand-teal hover:bg-brand-teal-light hover:text-brand-teal-dark"
+            aria-label="Ver producto"
           >
             <ArrowRight className="size-4" />
           </Button>

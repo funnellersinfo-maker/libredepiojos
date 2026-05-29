@@ -156,7 +156,9 @@ export default function ProductDetail() {
     useAppStore.setState({ selectedProduct: p });
     setQuantity(1);
     setNotifySubmitted(false);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    if (typeof window !== "undefined") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
   };
 
   return (
@@ -317,6 +319,7 @@ export default function ProductDetail() {
                                 setQuantity((q) => Math.max(1, q - 1))
                               }
                               disabled={quantity <= 1}
+                              aria-label="Reducir cantidad"
                             >
                               <Minus className="size-4" />
                             </Button>
@@ -328,6 +331,7 @@ export default function ProductDetail() {
                               size="icon"
                               className="size-10 rounded-l-none rounded-r-lg"
                               onClick={() => setQuantity((q) => q + 1)}
+                              aria-label="Aumentar cantidad"
                             >
                               <Plus className="size-4" />
                             </Button>
