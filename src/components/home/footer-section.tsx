@@ -5,15 +5,14 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { locations } from "@/lib/data";
 import {
-  Bug,
   Phone,
   Mail,
   MapPin,
   Instagram,
   Facebook,
   Youtube,
-  Heart,
 } from "lucide-react";
+import Image from "next/image";
 import { motion } from "framer-motion";
 
 export function FooterSection() {
@@ -26,10 +25,14 @@ export function FooterSection() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Brand */}
           <div className="space-y-4">
-            <div className="flex items-center gap-2">
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#D941A8] to-[#2B8780] flex items-center justify-center">
-                <Bug className="w-5 h-5 text-white" />
-              </div>
+            <div className="flex items-center gap-3">
+              <Image
+                src="/logo.png"
+                alt="Libre de Piojos"
+                width={40}
+                height={40}
+                className="rounded-lg"
+              />
               <div>
                 <p className="font-bold text-lg">Libre de Piojos</p>
                 <p className="text-xs text-white/60">by Cabellos Sanos</p>

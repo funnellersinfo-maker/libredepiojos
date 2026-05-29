@@ -9,9 +9,9 @@ import {
   ShoppingCart,
   Menu,
   X,
-  Bug,
   Phone,
 } from "lucide-react";
+import Image from "next/image";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -45,9 +45,14 @@ export function Header() {
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
           >
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#D941A8] to-[#2B8780] flex items-center justify-center">
-              <Bug className="w-5 h-5 text-white" />
-            </div>
+            <Image
+              src="/logo.png"
+              alt="Libre de Piojos"
+              width={36}
+              height={36}
+              className="rounded-lg"
+              priority
+            />
             <div className="flex flex-col">
               <span className="text-lg font-bold leading-tight text-foreground">
                 Libre de Piojos
