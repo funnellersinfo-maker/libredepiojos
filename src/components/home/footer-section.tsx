@@ -27,7 +27,7 @@ export function FooterSection() {
           <div className="space-y-4">
             <div className="flex items-center gap-3">
               <Image
-                src="/logo.png"
+                src="/images/brand/logo.png"
                 alt="Libre de Piojos"
                 width={40}
                 height={40}
@@ -105,18 +105,21 @@ export function FooterSection() {
             </ul>
           </div>
 
-          {/* Locations */}
+          {/* Sedes */}
           <div className="space-y-4">
             <h3 className="font-semibold text-sm uppercase tracking-wider text-white/90">
               Nuestras Sedes
             </h3>
             <ul className="space-y-3">
-              {locations.slice(0, 3).map((loc) => (
+              {locations.map((loc) => (
                 <li key={loc.city} className="flex gap-2">
                   <MapPin className="w-4 h-4 text-[#2B8780] shrink-0 mt-0.5" />
                   <div>
                     <p className="text-sm font-medium">{loc.city}</p>
                     <p className="text-xs text-white/60">{loc.address}</p>
+                    {loc.phone && (
+                      <p className="text-xs text-white/50">{loc.phone}</p>
+                    )}
                   </div>
                 </li>
               ))}
@@ -132,19 +135,19 @@ export function FooterSection() {
               <li className="flex gap-2">
                 <Phone className="w-4 h-4 text-[#2B8780] shrink-0" />
                 <a
-                  href="https://wa.me/573001234567?text=Hola%2C%20necesito%20informaci%C3%B3n%20sobre%20sus%20productos"
+                  href="https://wa.me/573102720863?text=Hola%2C%20necesito%20informaci%C3%B3n%20sobre%20sus%20productos"
                   className="text-sm text-white/70 hover:text-[#D941A8] transition-colors"
                 >
-                  WhatsApp
+                  310 272 0863
                 </a>
               </li>
               <li className="flex gap-2">
                 <Mail className="w-4 h-4 text-[#2B8780] shrink-0" />
                 <a
-                  href="mailto:info@libredepiojos.com"
+                  href="mailto:organizacioncabellossanos@gmail.com"
                   className="text-sm text-white/70 hover:text-[#D941A8] transition-colors"
                 >
-                  info@libredepiojos.com
+                  organizacioncabellossanos@gmail.com
                 </a>
               </li>
             </ul>
@@ -162,7 +165,7 @@ export function FooterSection() {
       <Separator className="bg-white/10" />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-white/50">
-          <p>© 2024 Libre de Piojos - Cabellos Sanos. Todos los derechos reservados.</p>
+          <p>© 2025 Libre de Piojos - Cabellos Sanos. Todos los derechos reservados.</p>
           <a
             href="#"
             className="hover:text-white/80 transition-colors flex items-center gap-1"
@@ -174,7 +177,7 @@ export function FooterSection() {
 
       {/* WhatsApp floating button */}
       <motion.a
-        href="https://wa.me/573001234567?text=Hola%2C%20necesito%20información%20sobre%20sus%20productos%20antipiojos"
+        href="https://wa.me/573102720863?text=Hola%2C%20necesito%20información%20sobre%20sus%20productos%20antipiojos"
         target="_blank"
         rel="noopener noreferrer"
         className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-[#25D366] text-white flex items-center justify-center shadow-lg hover:shadow-xl hover:scale-110 transition-all"

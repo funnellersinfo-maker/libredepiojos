@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { motion, useInView, AnimatePresence } from 'framer-motion';
 import {
@@ -21,7 +22,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { useAppStore } from '@/store/use-app-store';
-import { formatPrice, quizQuestions, products, locations } from '@/lib/data';
+import { formatPrice, quizQuestions, products, locations, testimonials } from '@/lib/data';
 import type { Product } from '@/lib/data';
 
 // ─── Brand Colors ─────────────────────────────────────────────
@@ -234,6 +235,15 @@ function SecondaryProductCard({
                 {product.shortDescription}
               </CardDescription>
             </div>
+          </div>
+          <div className="mt-3 flex h-32 items-center justify-center overflow-hidden rounded-lg bg-white">
+            <Image
+              src={product.image}
+              alt={product.name}
+              width={150}
+              height={150}
+              className="object-contain h-full max-h-[120px] w-auto"
+            />
           </div>
         </CardHeader>
 
@@ -484,12 +494,9 @@ export function ResultsPage() {
           transition={{ delay: 0.8 }}
         >
           <div className="flex -space-x-2">
-            {['🧑', '👩', '👧', '👨'].map((emoji, i) => (
-              <div
-                key={i}
-                className="flex size-7 items-center justify-center rounded-full bg-brand-cream border-2 border-background text-sm"
-              >
-                {emoji}
+            {testimonials.slice(0, 4).map((t, i) => (
+              <div key={i} className="relative size-7 overflow-hidden rounded-full border-2 border-background">
+                <Image src={t.image} alt={t.name} width={28} height={28} className="h-full w-full object-cover" />
               </div>
             ))}
           </div>
@@ -533,6 +540,16 @@ export function ResultsPage() {
                 {primaryProduct.description}
               </CardDescription>
             </CardHeader>
+
+            <div className="flex justify-center px-6 pt-4">
+              <Image
+                src={primaryProduct.image}
+                alt={primaryProduct.name}
+                width={200}
+                height={200}
+                className="object-contain max-h-[200px]"
+              />
+            </div>
 
             <CardContent className="space-y-6">
               {/* Rating */}
@@ -805,7 +822,7 @@ export function ResultsPage() {
                   {/* WhatsApp CTA */}
                   <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
                     <a
-                      href="https://wa.me/573001234567?text=Hola%2C%20me%20gustar%C3%ADa%20agendar%20una%20cita%20para%20tratamiento%20profesional"
+                      href="https://wa.me/573102720863?text=Hola%2C%20me%20gustar%C3%ADa%20agendar%20una%20cita%20para%20tratamiento%20profesional"
                       target="_blank"
                       rel="noopener noreferrer"
                     >

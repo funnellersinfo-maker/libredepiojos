@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef } from "react";
+import Image from "next/image";
 import { motion, useInView } from "framer-motion";
 import { Star, Users, ChevronLeft, ChevronRight, MapPin } from "lucide-react";
 import { testimonials } from "@/lib/data";
@@ -40,19 +41,6 @@ const trustBarVariant = {
     transition: { duration: 0.6, delay: 0.4, ease: [0.22, 1, 0.36, 1] },
   },
 };
-
-// ---------------------------------------------------------------------------
-// Helper: get initials from name
-// ---------------------------------------------------------------------------
-
-function getInitials(name: string): string {
-  return name
-    .split(" ")
-    .filter((_, i, arr) => i === 0 || i === arr.length - 1)
-    .map((w) => w[0])
-    .join("")
-    .toUpperCase();
-}
 
 // ---------------------------------------------------------------------------
 // Testimonial Card
@@ -95,9 +83,15 @@ function TestimonialCard({
 
       {/* Author info */}
       <div className="flex items-center gap-3 border-t border-gray-100 pt-4">
-        {/* Avatar placeholder with initials */}
-        <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#D941A8] to-[#2B8780] text-sm font-bold text-white shadow-sm">
-          {getInitials(testimonial.name)}
+        {/* Real testimonial photo */}
+        <div className="relative h-10 w-10 flex-shrink-0 overflow-hidden rounded-full border-2 border-white shadow-sm">
+          <Image
+            src={testimonial.image}
+            alt={testimonial.name}
+            width={40}
+            height={40}
+            className="h-full w-full object-cover"
+          />
         </div>
 
         <div className="flex flex-col gap-0.5">

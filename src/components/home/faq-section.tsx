@@ -268,7 +268,7 @@ export function FaqSection() {
             className="gap-2 rounded-xl bg-[#25D366] px-6 text-base font-semibold text-white shadow-lg shadow-[#25D366]/25 transition-all duration-300 hover:bg-[#20BD5A] hover:shadow-xl hover:shadow-[#25D366]/30"
           >
             <a
-              href="https://wa.me/573001234567?text=Hola%2C%20tengo%20una%20pregunta%20sobre%20sus%20productos"
+              href="https://wa.me/573102720863?text=Hola%2C%20tengo%20una%20pregunta%20sobre%20sus%20productos"
               target="_blank"
               rel="noopener noreferrer"
             >

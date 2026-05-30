@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Card,
@@ -23,18 +24,6 @@ const filters: { value: CategoryFilter; label: string }[] = [
   { value: "prevention", label: "Prevención" },
   { value: "tool", label: "Herramientas" },
 ];
-
-const categoryIcons: Record<Product["category"], string> = {
-  treatment: "🧴",
-  prevention: "🛡️",
-  tool: "✨",
-};
-
-const categoryGradients: Record<Product["category"], string> = {
-  treatment: "from-pink-500/20 to-rose-400/10",
-  prevention: "from-teal-500/20 to-emerald-400/10",
-  tool: "from-amber-400/20 to-yellow-300/10",
-};
 
 // ── Star Rating sub-component ─────────────────────────────────
 function StarRating({ rating, count }: { rating: number; count: number }) {
@@ -132,12 +121,16 @@ function ProductCard({
             </div>
           )}
 
-          <CardHeader className="pb-2">
-            {/* Category icon with gradient */}
-            <div
-              className={`mb-3 flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br ${categoryGradients[product.category]} text-3xl transition-transform duration-300 group-hover:scale-110`}
-            >
-              {categoryIcons[product.category]}
+          <CardHeader className="p-4 pb-2">
+            {/* Product image */}
+            <div className="mb-3 flex h-40 w-full items-center justify-center rounded-2xl bg-gradient-to-br from-white to-gray-50 overflow-hidden">
+              <Image
+                src={product.image}
+                alt={product.name}
+                width={200}
+                height={200}
+                className="object-contain h-full w-full p-4 transition-transform duration-300 group-hover:scale-110"
+              />
             </div>
 
             <h3 className="text-lg font-bold leading-tight text-foreground">

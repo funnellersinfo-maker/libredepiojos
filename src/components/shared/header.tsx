@@ -46,11 +46,10 @@ export function Header() {
             whileTap={{ scale: 0.98 }}
           >
             <Image
-              src="/logo.png"
+              src="/images/brand/logo.png"
               alt="Libre de Piojos"
-              width={36}
-              height={36}
-              className="rounded-lg"
+              width={44}
+              height={44}
               priority
             />
             <div className="flex flex-col">
@@ -86,7 +85,7 @@ export function Header() {
           <div className="flex items-center gap-2">
             {/* Phone CTA */}
             <a
-              href="https://wa.me/573001234567?text=Hola%2C%20me%20gustar%C3%ADa%20agendar%20una%20cita"
+              href="https://wa.me/573102720863?text=Hola%2C%20me%20gustar%C3%ADa%20agendar%20una%20cita"
               target="_blank"
               rel="noopener noreferrer"
               className="hidden sm:flex items-center gap-1.5 text-sm text-[#2B8780] hover:text-[#1D6B66] font-medium transition-colors"
@@ -145,12 +144,14 @@ export function Header() {
                             exit={{ opacity: 0, x: -20 }}
                             className="flex gap-3 p-3 rounded-xl bg-muted/50"
                           >
-                            <div className="w-16 h-16 rounded-lg bg-gradient-to-br from-[#F8E0F0] to-[#E0F2F0] flex items-center justify-center text-2xl shrink-0">
-                              {item.product.category === "treatment"
-                                ? "🧴"
-                                : item.product.category === "prevention"
-                                ? "🛡️"
-                                : "✨"}
+                            <div className="w-16 h-16 rounded-lg bg-white overflow-hidden flex items-center justify-center shrink-0">
+                              <Image
+                                src={item.product.image}
+                                alt={item.product.name}
+                                width={64}
+                                height={64}
+                                className="h-full w-full object-contain"
+                              />
                             </div>
                             <div className="flex-1 min-w-0">
                               <p className="font-semibold text-sm truncate">
@@ -264,7 +265,7 @@ export function Header() {
                 </Button>
               ))}
               <a
-                href="https://wa.me/573001234567?text=Hola%2C%20me%20gustar%C3%ADa%20agendar%20una%20cita"
+                href="https://wa.me/573102720863?text=Hola%2C%20me%20gustar%C3%ADa%20agendar%20una%20cita"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 px-4 py-2 text-sm text-[#2B8780] font-medium"

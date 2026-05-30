@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import {
@@ -750,12 +751,14 @@ export function CheckoutPage() {
                   <Card className="border-0 shadow-md bg-gradient-to-br from-[#D941A8]/5 to-[#2B8780]/5 overflow-hidden">
                     <CardContent className="p-4">
                       <div className="flex items-center gap-3">
-                        <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-[#F8E0F0] to-[#E0F2F0] flex items-center justify-center text-xl shrink-0">
-                          {primaryRecommendation.category === "treatment"
-                            ? "🧴"
-                            : primaryRecommendation.category === "prevention"
-                            ? "🛡️"
-                            : "✨"}
+                        <div className="w-12 h-12 rounded-lg overflow-hidden bg-white shrink-0 flex items-center justify-center">
+                          <Image
+                            src={primaryRecommendation.image}
+                            alt={primaryRecommendation.name}
+                            width={48}
+                            height={48}
+                            className="h-full w-full object-contain"
+                          />
                         </div>
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 mb-0.5">
@@ -816,13 +819,15 @@ export function CheckoutPage() {
                             layout
                             className="flex gap-3 p-3 rounded-xl bg-gray-50/80 border border-gray-100"
                           >
-                            {/* Product icon */}
-                            <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-[#F8E0F0] to-[#E0F2F0] flex items-center justify-center text-xl shrink-0">
-                              {item.product.category === "treatment"
-                                ? "🧴"
-                                : item.product.category === "prevention"
-                                ? "🛡️"
-                                : "✨"}
+                            {/* Product image */}
+                            <div className="w-12 h-12 rounded-lg overflow-hidden bg-white shrink-0 flex items-center justify-center">
+                              <Image
+                                src={item.product.image}
+                                alt={item.product.name}
+                                width={48}
+                                height={48}
+                                className="h-full w-full object-contain"
+                              />
                             </div>
 
                             {/* Product info + controls */}
@@ -1134,7 +1139,7 @@ export function CheckoutPage() {
 
                   {/* WhatsApp CTA */}
                   <a
-                    href={`https://wa.me/573001234567?text=${encodeURIComponent(
+                    href={`https://wa.me/573102720863?text=${encodeURIComponent(
                       `¡Hola! Acabo de confirmar mi solución personalizada (pedido ${orderNumber}) por ${formatPrice(
                         total
                       )}. Mi diagnóstico: ${

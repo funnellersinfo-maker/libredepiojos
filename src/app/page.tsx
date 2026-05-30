@@ -6,6 +6,7 @@ import { HeroSection } from "@/components/home/hero-section";
 import ProductsSection from "@/components/home/products-section";
 import { TestimonialsSection } from "@/components/home/testimonials-section";
 import { FaqSection } from "@/components/home/faq-section";
+import { LocationsSection } from "@/components/home/locations-section";
 import { FooterSection } from "@/components/home/footer-section";
 import { QuizFlow } from "@/components/quiz/quiz-flow";
 import { ResultsPage } from "@/components/quiz/results-page";
@@ -33,6 +34,7 @@ export default function Home() {
               <HeroSection />
               <ProductsSection />
               <TestimonialsSection />
+              <LocationsSection />
               <FaqSection />
             </motion.div>
           )}

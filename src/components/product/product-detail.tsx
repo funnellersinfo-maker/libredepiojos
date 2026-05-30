@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -28,12 +29,6 @@ import {
 } from "lucide-react";
 
 // ── Category helpers ──────────────────────────────────────────
-const categoryIcons: Record<Product["category"], string> = {
-  treatment: "\u{1F9F4}",
-  prevention: "\u{1F6E1}\uFE0F",
-  tool: "\u2728",
-};
-
 const categoryGradients: Record<Product["category"], string> = {
   treatment: "from-pink-500/20 to-rose-400/10",
   prevention: "from-teal-500/20 to-emerald-400/10",
@@ -220,7 +215,7 @@ export default function ProductDetail() {
                       </Badge>
                     )}
 
-                    {/* Category Emoji */}
+                    {/* Product Image */}
                     <motion.div
                       initial={{ scale: 0.5, opacity: 0 }}
                       animate={{ scale: 1, opacity: 1 }}
@@ -230,9 +225,15 @@ export default function ProductDetail() {
                         damping: 15,
                         delay: 0.2,
                       }}
-                      className="text-8xl md:text-9xl"
+                      className="w-full h-full flex items-center justify-center p-6"
                     >
-                      {categoryIcons[product.category]}
+                      <Image
+                        src={product.image}
+                        alt={product.name}
+                        width={250}
+                        height={250}
+                        className="object-contain max-h-[280px] md:max-h-[320px]"
+                      />
                     </motion.div>
 
                     {/* Size badge */}
@@ -552,12 +553,18 @@ export default function ProductDetail() {
                     >
                       <Card className="group cursor-pointer overflow-hidden border-border/50 bg-white transition-shadow duration-300 hover:shadow-lg hover:shadow-pink-500/5">
                         <CardContent className="p-4">
-                          {/* Icon + Badge row */}
+                          {/* Image + Badge row */}
                           <div className="mb-3 flex items-start justify-between">
                             <div
-                              className={`flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br ${categoryGradients[rp.category]} text-2xl transition-transform duration-300 group-hover:scale-110`}
+                              className={`flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br ${categoryGradients[rp.category]} transition-transform duration-300 group-hover:scale-110 overflow-hidden`}
                             >
-                              {categoryIcons[rp.category]}
+                              <Image
+                                src={rp.image}
+                                alt={rp.name}
+                                width={48}
+                                height={48}
+                                className="object-contain"
+                              />
                             </div>
                             {rp.badge && (
                               <Badge

@@ -155,7 +155,7 @@ export function HeroSection() {
             </motion.div>
           </div>
 
-          {/* Right: Hero image — smaller */}
+          {/* Right: Hero image */}
           <motion.div
             custom={2}
             variants={fadeSlideUp}
@@ -165,15 +165,27 @@ export function HeroSection() {
           >
             <div className="w-full max-w-sm lg:max-w-md">
               <Image
-                src="/hero-family.png"
+                src="/images/hero/family-hero.png"
                 alt="Familia libre de piojos - Tratamiento natural y efectivo"
                 width={500}
-                height={286}
-                className="rounded-2xl shadow-lg"
+                height={500}
+                className="aspect-square rounded-2xl object-cover shadow-lg"
                 priority
               />
             </div>
           </motion.div>
+
+          {/* Floating animated character — visible md+ */}
+          <div className="pointer-events-none absolute bottom-4 right-4 z-10 hidden md:block md:bottom-8 md:right-8 lg:bottom-12 lg:right-12">
+            <Image
+              src="/images/brand/personaje-animado.gif"
+              alt="Personaje animado Libre de Piojos"
+              width={120}
+              height={120}
+              className="animate-float"
+              unoptimized
+            />
+          </div>
         </div>
       </div>
 
